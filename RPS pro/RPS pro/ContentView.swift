@@ -53,7 +53,7 @@ struct ContentView: View {
 }
 
 struct instructions: View {
-    @StateObject private var model = CameraFeed()
+    @EnvironmentObject var model : CameraFeed
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         VStack {

@@ -6,10 +6,22 @@
 //
 
 /*
+
+ Goal:
+ * I want my app to show a live camera feed for about 5 whole seconds where three of those seconds are the countdown
+and then by the time the player is supposed to throw out a move which then it runs machine learning code and determines which move you threw out
+ and then sends you into another view where it determines the winner against you and another bot
+ 
+ 
+ Plan:
+ 1. Have a global instance of the camera feed that exists across all views
+ 2.
  
  */
 import AVFoundation
 import CoreImage
+import AVKit
+import Vision
 
 class CameraFeed: NSObject, ObservableObject {
     @Published var frame: CGImage?
@@ -61,19 +73,26 @@ class CameraFeed: NSObject, ObservableObject {
             self.setupCaptureSession()
             self.captureSession.startRunning()
         }
+        
     }
     
 }
 
+
+
+
+
 extension CameraFeed: AVCaptureVideoDataOutputSampleBufferDelegate {
     
-    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+   func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         guard let cgImage = imageFromSampleBuffer(sampleBuffer: sampleBuffer) else {return}
         
         DispatchQueue.main.async { [unowned self] in
             self.frame = cgImage
         }
+       
     }
+     
     
     private func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer) -> CGImage? {
         guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {return nil}

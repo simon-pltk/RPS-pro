@@ -26,7 +26,7 @@ struct DisplayView: View {
     init(image: CGImage? = nil, label: Text = Text("frame")) {
         self.image = image
         self.label = label
-    }
+    } 
 }
 
 #Preview {
